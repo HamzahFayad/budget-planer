@@ -50,11 +50,11 @@ app.get("/", (req, res) => {
 
 app.get("/data/:id", (req, res) => {
   const item = req.params.id;
-  //console.log(item);
+  console.log(item);
   for (let data of mydata) {
     //console.log(d, ":::", item, ":::");
     if (data[item]) {
-      console.log(":::", data[item]);
+      console.log(":::", data[item][0].id);
       res.json(data[item]);
       return;
     }
@@ -77,10 +77,27 @@ app.get("/data/:id", (req, res) => {
   }
 });
 */
+
+//POST new item
 app.post("/", (req, res) => {
   console.log(req.body);
   mydata.push(req.body);
   res.status(200).send("OK");
+});
+
+//Post new budget to budget field
+app.post("/data/:id/:newBudget", (req, res) => {
+  const item = req.params.id;
+  const newBudget = parseInt(req.params.newBudget);
+  console.log(item);
+  for (let data of mydata) {
+    console.log(":::", data[item]);
+    if (data[item]) {
+      data[item][0].budget.push(newBudget);
+      res.json(data[item]);
+      console.log("budget", data[item][0].budget);
+    }
+  }
 });
 
 app.delete("/delete", (req, res) => {
